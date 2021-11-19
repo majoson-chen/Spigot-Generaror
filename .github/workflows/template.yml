@@ -28,4 +28,6 @@ jobs:
       
     - name: Build Jars
       run: java -jar BuildTools.jar --rev latest
+    
+    - run: ls -lh
       
