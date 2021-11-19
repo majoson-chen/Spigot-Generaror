@@ -27,7 +27,19 @@ jobs:
       run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
       
     - name: Build Jars
-      run: java -jar BuildTools.jar --rev latest
+      run: |
+        mkdir ./outputs
+        java -jar BuildTools.jar --rev latest --output-dir ./outputs
     
-    - run: ls -lh
+    - name: Upload to release
+      uses: ncipollo/release-action@v1.8.0
+      with:
+        name: Ver.Latest
+        allowUpdates: true
+        replacesArtifacts: true
+        tag: BuildRelease
+        # commit: ${{ env.CURRENT_BRANCH }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: ./outputs/*
+    
       
