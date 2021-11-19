@@ -24,7 +24,9 @@ jobs:
         # check-latest: true
     
     - name: Install Git
-      run: sudo git config --global --unset core.autocrlf
+      run: |
+        sudo apt-get install -y git
+        sudo git config --global --unset core.autocrlf
     
     - name: Download BuildTools.jar
       run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
