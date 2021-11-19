@@ -22,10 +22,15 @@ jobs:
         distribution: 'adopt'
         java-version: '16'
         # check-latest: true
-        
+    
+    - name: Install Git
+      run: |
+        apt-get install -y git
+        git config --global --unset core.autocrlf
+    
     - name: Download BuildTools.jar
       run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
       
     - name: Build Jars
-      run: java --version
+      run: java -jar BuildTools.jar --rev latest
       
