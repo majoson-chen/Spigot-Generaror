@@ -10,10 +10,11 @@ on:
     - cron:  '30 18 1,16 * *'
 
 jobs:
-  build:
-
+  build_on_java16:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        ver: ['latest']
     steps:
     - uses: actions/checkout@v2
     - name: Setup java
