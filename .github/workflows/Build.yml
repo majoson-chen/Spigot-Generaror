@@ -160,9 +160,12 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - run: mkdir dists
+
             - uses: actions/download-artifact@v2
               with:
                   name: outputs
+                  path: dists/
 
             - run: "tree"
 
@@ -175,4 +178,16 @@ jobs:
                   tag: BuildRelease
                   # commit: ${{ env.CURRENT_BRANCH }}
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  artifacts: ./*
+                  artifacts: dists/*
+
+            - name: Setup aliyun oss
+              uses: manyuanrong/setup-ossutil@master
+              with:
+                endpoint: oss-cn-shanghai.aliyuncs.com
+                access-key-id: ${{ secrets.OSS_KEY_ID }}
+                access-key-secret: ${{ secrets.OSS_KEY_SECRET }}
+            
+            - name: Upload to OSS
+              env:
+                UPLOAD_PATH: ${{ secrets.OSS_KEY_SECRET }}
+              run: ossutil cp -rf dists/ $UPLOAD_PATH

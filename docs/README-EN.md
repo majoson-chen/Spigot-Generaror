@@ -25,5 +25,6 @@ Since the version of `Minecraft` is iterated very quickly, if you find that the 
 3. Modify `.github/workflows/Build.yml`  
 Find `jobs`> `build_on_java16`> `strategy`  
 Just add the latest version option in `ver`  
-![](../docs/ver.png)
-4. Submit a pull request and wait for my approval.
+![](../docs/ver.png)  
+Then, go to the top of the file and modify `env.latest`
+4. Submit a `pull request` and wait for my approval.

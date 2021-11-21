@@ -25,6 +25,7 @@
 `fork` 本项目
 3. 修改 `.github/workflows/Build.yml`  
 找到 `jobs` > `build_on_java16` > `strategy`  
-在 `ver` 中添加 最新版本的选项即可.  
-![](./docs/ver.png)
+在 `ver` 中添加 最新版本的选项.  
+![](./docs/ver.png)  
+随后, 到文件顶部修改 `env.latest`
 4. 提交 `pull request`, 等待我通过即可.
