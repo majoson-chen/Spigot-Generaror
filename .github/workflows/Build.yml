@@ -35,7 +35,7 @@ jobs:
                   path: outputs/
 
             - name: pack enviroment
-              run: tar -cvf env.tar BuildData Bukkit CraftBukkit Spigot apache-maven-3.6.0 BuildTools.jar
+              run: tar -cvf env.tar BuildData Bukkit CraftBukkit Spigot apache-maven-3.6.0 BuildTools.jar work
 
             - name: Upload enviroment
               uses: actions/upload-artifact@v2
@@ -51,7 +51,7 @@ jobs:
             matrix:
                 ver:
                     - "1.17.1"
-                    # - '1.17'
+                    - '1.17'
         env:
             ver: ${{ matrix.ver }}
 
@@ -68,24 +68,89 @@ jobs:
                   name: env.tar
 
             - name: Unpack env.tar
-              run: tar -xcf env.tar
+              run: tar -xvf env.tar
 
-            - run: tree
+            - name: Build Jars
+              run: |
+                  mkdir ./outputs
+                  java -jar BuildTools.jar --rev $ver --output-dir ./outputs
 
-        # - name: Build Jars
-        #   run: |
-        #     mkdir ./outputs
-        #     java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+            - name: Upload artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: outputs
+                  path: outputs
 
-        # - name: Upload artifact
-        #   uses: actions/upload-artifact@v2
-        #   with:
-        #     name: outputs
-        #     path: outputs
+    build_on_java8:
+        # for minecraft 1.17+
+        needs: [setup_env]
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                ver:
+                    - '1.16.5'
+                    - '1.16.4'
+                    - '1.16.3'
+                    - '1.16.2'
+                    - '1.16.1'
+                    - '1.15.2'
+                    - '1.15.1'
+                    - '1.15'
+                    - '1.14.4'
+                    - '1.14.3'
+                    - '1.14.2'
+                    - '1.14.1'
+                    - '1.14'
+                    - '1.13.2'
+                    - '1.13.1'
+                    - '1.13'
+                    - '1.12.2'
+                    - '1.12.1'
+                    - '1.12'
+                    - '1.11.2'
+                    - '1.11.1'
+                    - '1.11'
+                    - '1.10.2'
+                    - '1.9.4'
+                    - '1.9.2'
+                    - '1.9'
+                    - '1.8.8'
+                    - '1.8.3'
+                    - '1.8'
+        env:
+            ver: ${{ matrix.ver }}
+
+        steps:
+            - name: Setup java
+              uses: actions/setup-java@v2
+              with:
+                  distribution: "adopt"
+                  java-version: "8"
+
+            - name: Download env.tar
+              uses: actions/download-artifact@v2
+              with:
+                  name: env.tar
+
+            - name: Unpack env.tar
+              run: tar -xvf env.tar
+
+            - name: Build Jars
+              run: |
+                  mkdir ./outputs
+                  java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: outputs
+                  path: outputs
+
 
     upload_and_dist:
         needs:
             - build_on_java16
+            - build_on_java8
 
         runs-on: ubuntu-latest
 
