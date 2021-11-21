@@ -50,7 +50,7 @@ jobs:
         strategy:
             matrix:
                 ver:
-                    - "1.17.1"
+                    - '1.17.1'
                     - '1.17'
         env:
             ver: ${{ matrix.ver }}
@@ -71,6 +71,7 @@ jobs:
               run: tar -xvf env.tar
 
             - name: Build Jars
+              continue-on-error: true
               run: |
                   mkdir ./outputs
                   java -jar BuildTools.jar --rev $ver --output-dir ./outputs
@@ -136,6 +137,7 @@ jobs:
               run: tar -xvf env.tar
 
             - name: Build Jars
+              continue-on-error: true
               run: |
                   mkdir ./outputs
                   java -jar BuildTools.jar --rev $ver --output-dir ./outputs
