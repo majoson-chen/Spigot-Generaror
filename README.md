@@ -1,2 +1,3 @@
 # Spigot-Generaror
-Build minecraft spigot core automaticly by GIthub Actions.
+通过 `Github` 的 `Actions` 功能自动构建 `Spigot` 的核心.
+
