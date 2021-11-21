@@ -57,11 +57,6 @@ jobs:
         env:
             ver: ${{ matrix.ver }}
 
-        # if the version will build is the latest, it will raise and error.
-        # i don't konw why.
-        # so , skip the latest ver, bue use `latest` to build it.
-        # if: ${{ matrix.ver != latest }}
-
         steps:
             - name: Setup java
               uses: actions/setup-java@v2
