@@ -75,6 +75,7 @@ jobs:
             - run: mkdir ./outputs
 
             - name: Build Jars
+              if: ${{ matrix.ver !=  env.latest }}
               continue-on-error: true
               run: java -jar BuildTools.jar --rev $ver --output-dir ./outputs
 
