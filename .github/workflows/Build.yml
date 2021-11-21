@@ -160,12 +160,12 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - run: mkdir dists
+            - run: mkdir spigot
 
             - uses: actions/download-artifact@v2
               with:
                   name: outputs
-                  path: dists/
+                  path: spigot/
 
             - run: "tree"
 
@@ -178,7 +178,7 @@ jobs:
                   tag: BuildRelease
                   # commit: ${{ env.CURRENT_BRANCH }}
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  artifacts: dists/*
+                  artifacts: spigot/*
 
             - name: Setup aliyun oss
               uses: manyuanrong/setup-ossutil@master
@@ -190,4 +190,4 @@ jobs:
             - name: Upload to OSS
               env:
                 UPLOAD_PATH: ${{ secrets.OSS_KEY_SECRET }}
-              run: ossutil cp -rf dists/ $UPLOAD_PATH
+              run: ossutil cp -rf spigot $UPLOAD_PATH
