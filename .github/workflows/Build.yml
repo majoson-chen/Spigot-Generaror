@@ -28,7 +28,7 @@ jobs:
     - name: Build Jars
       run: |
         mkdir ./outputs
-        java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+        java -jar BuildTools.jar --rev latest --output-dir ./outputs
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
