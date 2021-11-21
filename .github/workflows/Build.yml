@@ -119,7 +119,7 @@ jobs:
         with:
           name: outputs
       
-      - run: 'ls -h outputs/'
+      - run: 'tree'
 
       - name: Upload to release
         uses: ncipollo/release-action@v1.8.0
