@@ -19,6 +19,9 @@ jobs:
           - 'latest'
           - '1.17.1'
           - '1.17'
+    env:
+      ver: ${{ matrix.ver }}
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup java
@@ -34,7 +37,7 @@ jobs:
     - name: Build Jars
       run: |
         mkdir ./outputs
-        java -jar BuildTools.jar --rev ${{ matrix.node }} --output-dir ./outputs
+        java -jar BuildTools.jar --rev $ver --output-dir ./outputs
     
     - name: Upload to release
       uses: ncipollo/release-action@v1.8.0
