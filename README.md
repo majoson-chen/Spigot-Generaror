@@ -1,5 +1,7 @@
 # Spigot-Generaror
-![](https://shields.io//github/license/:user/:repo)
+![](https://shields.io/github/license/:user/:repo)
+![](https://shields.io/badge/Latest-1.17.1-blue)
+![](https://shields.io/github/downloads/:user/:repo/total)
 
 **[简体中文]|[English](./docs/README-EN.md)**
 
