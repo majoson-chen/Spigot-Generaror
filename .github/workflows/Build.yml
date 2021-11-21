@@ -190,4 +190,4 @@ jobs:
             - name: Upload to OSS
               env:
                 UPLOAD_PATH: ${{ secrets.OSS_KEY_SECRET }}
-              run: ossutil cp -rf spigot $UPLOAD_PATH
+              run: ossutil cp -rfu spigot/ $UPLOAD_PATH
