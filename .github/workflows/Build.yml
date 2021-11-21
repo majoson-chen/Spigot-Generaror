@@ -77,11 +77,11 @@ jobs:
             - name: Unpack env.tar
               run: tar -xvf env.tar
 
+            - run: mkdir ./outputs
+
             - name: Build Jars
               continue-on-error: true
-              run: |
-                  mkdir ./outputs
-                  java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+              run: java -jar BuildTools.jar --rev $ver --output-dir ./outputs
 
             - name: Upload artifact
               uses: actions/upload-artifact@v2
@@ -143,11 +143,11 @@ jobs:
             - name: Unpack env.tar
               run: tar -xvf env.tar
 
+            - run: mkdir ./outputs
+
             - name: Build Jars
               continue-on-error: true
-              run: |
-                  mkdir ./outputs
-                  java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+              run: java -jar BuildTools.jar --rev $ver --output-dir ./outputs
 
             - name: Upload artifact
               uses: actions/upload-artifact@v2
