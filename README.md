@@ -1,4 +1,5 @@
 # Spigot-Generaror
+![](https://shields.io//github/license/:user/:repo)
 
 **[简体中文]|[English](./docs/README-EN.md)**
 
