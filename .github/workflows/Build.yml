@@ -94,7 +94,7 @@ jobs:
         with:
           name: outputs
       
-      - run: 'ls -h outputs'
+      - run: 'ls -h outputs/'
 
       - name: Upload to release
         uses: ncipollo/release-action@v1.8.0
