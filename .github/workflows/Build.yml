@@ -11,10 +11,14 @@ on:
 
 jobs:
   build_on_java16:
+    # for minecraft 1.17+
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ver: ['latest']
+        ver:
+          - 'latest'
+          - '1.17.1'
+          - '1.17'
     steps:
     - uses: actions/checkout@v2
     - name: Setup java
@@ -30,7 +34,7 @@ jobs:
     - name: Build Jars
       run: |
         mkdir ./outputs
-        java -jar BuildTools.jar --rev latest --output-dir ./outputs
+        java -jar BuildTools.jar --rev ${{ matrix.node }} --output-dir ./outputs
     
     - name: Upload to release
       uses: ncipollo/release-action@v1.8.0
