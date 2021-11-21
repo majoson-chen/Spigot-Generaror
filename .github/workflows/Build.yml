@@ -10,17 +10,8 @@ on:
     - cron:  '30 18 1,16 * *'
 
 jobs:
-  build_on_java16:
-    # for minecraft 1.17+
+  setup_env:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        ver:
-          - 'latest'
-          # - '1.17.1'
-          # - '1.17'
-    env:
-      ver: ${{ matrix.ver }}
 
     steps:
     - uses: actions/checkout@v2
@@ -33,7 +24,7 @@ jobs:
     
     - name: Download BuildTools.jar
       run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-      
+
     - name: Build Jars
       run: |
         mkdir ./outputs
@@ -44,73 +35,62 @@ jobs:
       with:
         name: outputs
         path: outputs
-    
-    
 
-  build_on_java8:
+    - name: Upload enviroment
+      uses: actions/upload-artifact@v2
+      with:
+        name: enviroment
+        path: |
+          BuildData
+          Bukkit
+          CraftBukkit
+          Spigot
+          apache-maven-3.6.0
+          BuildTools.jar
+
+
+  build_on_java16:
+    # for minecraft 1.17+
+    needs: [setup_env]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         ver:
-          - '1.16.5'
-          # - '1.16.4'
-          # - '1.16.3'
-          # - '1.16.2'
-          # - '1.16.1'
-          # - '1.15.2'
-          # - '1.15.1'
-          # - '1.15'
-          # - '1.14.4'
-          # - '1.14.3'
-          # - '1.14.2'
-          # - '1.14.1'
-          # - '1.14'
-          # - '1.13.2'
-          # - '1.13.1'
-          # - '1.13'
-          # - '1.12.2'
-          # - '1.12.1'
-          # - '1.12'
-          # - '1.11.2'
-          # - '1.11.1'
-          # - '1.11'
-          # - '1.10.2'
-          # - '1.9.4'
-          # - '1.9.2'
-          # - '1.9'
-          # - '1.8.8'
-          # - '1.8.3'
-          # - '1.8'
+          - '1.17.1'
+          # - '1.17'
     env:
       ver: ${{ matrix.ver }}
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup java
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '8'
-        # check-latest: true
+    - run: tree
+    # - name: Setup java
+    #   uses: actions/setup-java@v2
+    #   with:
+    #     distribution: 'adopt'
+    #     java-version: '16'
+    #     # check-latest: true
     
-    - name: Download BuildTools.jar
-      run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-      
-    - name: Build Jars
-      run: |
-        mkdir ./outputs
-        java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+    # - name: Get Build enviroment
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: 
+    #       enviroment
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: outputs
-        path: outputs
+    # - name: Build Jars
+    #   run: |
+    #     mkdir ./outputs
+    #     java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+
+    # - name: Upload artifact
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: outputs
+    #     path: outputs
 
   upload_and_dist:
     needs: 
       - build_on_java16
-      - build_on_java8
 
     runs-on: ubuntu-latest
 
@@ -130,7 +110,7 @@ jobs:
           tag: BuildRelease
           # commit: ${{ env.CURRENT_BRANCH }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: ./outputs/*
+          artifacts: ./*
     
 
     
