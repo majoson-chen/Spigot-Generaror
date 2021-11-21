@@ -38,16 +38,71 @@ jobs:
       run: |
         mkdir ./outputs
         java -jar BuildTools.jar --rev $ver --output-dir ./outputs
-    
-    - name: Upload to release
-      uses: ncipollo/release-action@v1.8.0
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
-        name: Ver.Latest
-        allowUpdates: true
-        replacesArtifacts: true
-        tag: BuildRelease
-        # commit: ${{ env.CURRENT_BRANCH }}
-        token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: ./outputs/*
+        name: outputs
+        path: outputs
+    
+    
+
+  build_on_java8:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ver:
+          - 1.16.5
+          - 1.16.4
+          - 1.16.3
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '8'
+        # check-latest: true
+    
+    - name: Download BuildTools.jar
+      run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+      
+    - name: Build Jars
+      run: |
+        mkdir ./outputs
+        java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: outputs
+        path: outputs
+
+  upload_and_dist:
+    needs: 
+      - build_on_java16
+      - build_on_java8
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: outputs
+      
+      - run: 'ls -h outputs'
+
+      - name: Upload to release
+        uses: ncipollo/release-action@v1.8.0
+        with:
+          name: Build_Distribute
+          allowUpdates: true
+          replacesArtifacts: true
+          tag: BuildRelease
+          # commit: ${{ env.CURRENT_BRANCH }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: ./outputs/*
+    
+
     
       
