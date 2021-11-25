@@ -37,7 +37,7 @@ jobs:
                   path: outputs/
 
             - name: pack enviroment
-              run: tar -cvf env.tar BuildData Bukkit CraftBukkit Spigot apache-maven-3.6.0 BuildTools.jar work
+              run: tar -cvf env.tar BuildData Bukkit CraftBukkit Spigot apache-maven-3.6.0 BuildTools.jar
 
             - name: Upload enviroment
               uses: actions/upload-artifact@v2
