@@ -65,13 +65,8 @@ jobs:
                   distribution: "adopt"
                   java-version: "16"
 
-            - name: Download env.tar
-              uses: actions/download-artifact@v2
-              with:
-                  name: env.tar
-
-            - name: Unpack env.tar
-              run: tar -xvf env.tar
+            - name: Download BuildTools.jar
+              run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 
             - run: mkdir ./outputs
 
@@ -132,13 +127,8 @@ jobs:
                   distribution: "adopt"
                   java-version: "8"
 
-            - name: Download env.tar
-              uses: actions/download-artifact@v2
-              with:
-                  name: env.tar
-
-            - name: Unpack env.tar
-              run: tar -xvf env.tar
+            - name: Download BuildTools.jar
+              run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 
             - run: mkdir ./outputs
 
@@ -189,6 +179,4 @@ jobs:
                 access-key-secret: ${{ secrets.OSS_KEY_SECRET }}
             
             - name: Upload to OSS
-              env:
-                UPLOAD_PATH: ${{ secrets.OSS_KEY_SECRET }}
               run: ossutil cp -rf spigot/ oss://static-m-jay/spigot/
