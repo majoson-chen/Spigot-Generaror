@@ -37,7 +37,7 @@ jobs:
                   path: outputs/
 
             - name: pack enviroment
-              run: tar -cvf env.tar BuildData Bukkit CraftBukkit Spigot apache-maven-3.6.0 BuildTools.jar
+              run: tar -cvf env.tar Bukkit CraftBukkit Spigot apache-maven-3.6.0 BuildTools.jar
 
             - name: Upload enviroment
               uses: actions/upload-artifact@v2
@@ -52,6 +52,7 @@ jobs:
         strategy:
             matrix:
                 ver:
+                    - 'latest'
                     - '1.17.1'
                     - '1.17'
         env:
@@ -75,7 +76,7 @@ jobs:
             - run: mkdir ./outputs
 
             - name: Build Jars
-              if: ${{ matrix.ver !=  env.latest }}
+              # if: ${{ matrix.ver !=  env.latest }}
               continue-on-error: true
               run: java -jar BuildTools.jar --rev $ver --output-dir ./outputs
 
