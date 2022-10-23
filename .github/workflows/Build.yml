@@ -44,8 +44,7 @@ jobs:
     #           with:
     #               name: env.tar
     #               path: env.tar
-
-    build_on_java16:
+    build_on_java18:
         # for minecraft 1.17+
         runs-on: ubuntu-latest
         strategy:
@@ -58,6 +57,38 @@ jobs:
                     - '1.18.2'
                     - '1.18.1'
                     - '1.18'
+        env:
+            ver: ${{ matrix.ver }}
+
+        steps:
+            - name: Setup java
+              uses: actions/setup-java@v2
+              with:
+                  distribution: "adopt"
+                  java-version: "18"
+
+            - name: Download BuildTools.jar
+              run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+
+            - run: mkdir ./outputs
+
+            - name: Build Jars
+              # if: ${{ matrix.ver !=  env.latest }}
+              continue-on-error: true
+              run: java -jar BuildTools.jar --rev $ver --output-dir ./outputs
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: outputs
+                  path: outputs
+
+    build_on_java16:
+        # for minecraft 1.17+
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                ver:
                     - '1.17.1'
                     - '1.17'
         env:
@@ -151,6 +182,7 @@ jobs:
         needs:
             - build_on_java16
             - build_on_java8
+            - build_on_java18
 
         runs-on: ubuntu-latest
 
